@@ -6,6 +6,7 @@ import { PlayerService } from '../services/player/player.service';
 import { TeamService } from '../services/team/team.service';
 import { SignalrService } from '../services/signalr/signalr.service';
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-player-transfer',
@@ -21,7 +22,14 @@ export class ViewPlayersComponent implements OnInit, OnDestroy {
   playerHubUrl: string = `${environment.apiDomain}/playerhub`;
   teamHubUrl: string = `${environment.apiDomain}/teamhub`;
 
-  constructor(private playerService: PlayerService, private teamService: TeamService, private playerSignalrService: SignalrService, private teamSignalrService: SignalrService) { }
+  constructor
+    (
+      private playerService: PlayerService,
+      private teamService: TeamService,
+      private playerSignalrService: SignalrService,
+      private teamSignalrService: SignalrService,
+      private router: Router
+    ) { }
 
   ngOnInit(): void {
     this.loadData();
@@ -77,5 +85,9 @@ export class ViewPlayersComponent implements OnInit, OnDestroy {
   getTeamName(teamId: string | null) {
     if (!teamId) return "Not part of a team";
     return this.teams.get(teamId);
+  }
+
+  navigateToUpdatePlayer(playerId: string): void {
+    this.router.navigate(['/update-player', playerId]);
   }
 }

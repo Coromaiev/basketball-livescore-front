@@ -2,7 +2,7 @@
   <h2>Players Listing</h2>
   <div>
     <ul>
-      <li *ngFor="let player of players">
+      <li *ngFor="let player of players" (click)="navigateToUpdatePlayer(player.id)">
         {{ player.firstName }} {{ player.lastName }} - {{ getTeamName(player.teamId) }}
       </li>
     </ul>

@@ -1,0 +1,19 @@
+<div>
+  <h2>Update Player</h2>
+  <div *ngIf="player">
+    <form (ngSubmit)="updatePlayer()">
+      <label for="firstName">First Name</label>
+      <input id="firstName" [(ngModel)]="player.firstName" name="firstName" required />
+
+      <label for="lastName">Last Name</label>
+      <input id="lastName" [(ngModel)]="player.lastName" name="lastName" required />
+
+      <label for="teamId">Team</label>
+      <select id="teamId" [(ngModel)]="player.teamId" name="teamId">
+        <option *ngFor="let team of teams" [value]="team.id">{{ team.name }}</option>
+      </select>
+
+      <button type="submit">Update Player</button>
+    </form>
+  </div>
+</div>
