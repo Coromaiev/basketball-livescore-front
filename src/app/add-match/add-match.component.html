@@ -1,0 +1,40 @@
+<div class="add-match-container">
+  <h2>Add New Match</h2>
+
+  <form [formGroup]="matchForm" (ngSubmit)="addMatch()">
+    <div class="form-group">
+      <label for="hostsId">Hosts</label>
+      <select id="hostsId" formControlName="hostsId">
+        <option *ngFor="let team of teams" [value]="team.id">{{ team.name }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="visitorsId">Visitors</label>
+      <select id="visitorsId" formControlName="visitorsId">
+        <option *ngFor="let team of teams" [value]="team.id">{{ team.name }}</option>
+      </select>
+    </div>
+
+    <div class="info-text">
+      Leave the next fields blank to use standard values for basketball matches
+    </div>
+
+    <div class="form-group">
+      <label for="quarterDuration">Quarter Duration (minutes)</label>
+      <input type="number" id="quarterDuration" formControlName="quarterDuration" />
+    </div>
+
+    <div class="form-group">
+      <label for="numberOfQuarters">Number of Quarters</label>
+      <input type="number" id="numberOfQuarters" formControlName="numberOfQuarters" />
+    </div>
+
+    <div class="form-group">
+      <label for="timeoutDuration">Timeout Duration (minutes)</label>
+      <input type="number" id="timeoutDuration" formControlName="timeoutDuration" />
+    </div>
+
+    <button type="submit" [disabled]="matchForm.invalid">Add Match</button>
+  </form>
+</div>

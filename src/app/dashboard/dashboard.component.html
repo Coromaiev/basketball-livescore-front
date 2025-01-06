@@ -1,1 +1,8 @@
-<h1>Basketball Matches</h1>
+<div>
+  <h1>Matches Dashboard</h1>
+  <ul>
+    <li *ngFor="let match of matches">
+      Match: {{ match.hosts.name }} vs {{ match.visitors.name }}
+    </li>
+  </ul>
+</div>

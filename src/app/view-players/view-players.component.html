@@ -1,0 +1,10 @@
+<div>
+  <h2>Players Listing</h2>
+  <div>
+    <ul>
+      <li *ngFor="let player of players">
+        {{ player.firstName }} {{ player.lastName }} - {{ getTeamName(player.teamId) }}
+      </li>
+    </ul>
+  </div>
+</div>
