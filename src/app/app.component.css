@@ -1,4 +1,35 @@
-.active {
-    color: #333;
-    font-weight: bold;
+/* Navigation Bar Styles */
+.navbar {
+  background-color: #007bff;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
+.navbar-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.navbar-item {
+  font-size: 16px;
+}
+
+  .navbar-item a {
+    text-decoration: none;
+    color: white;
+    transition: color 0.3s ease;
+  }
+
+    .navbar-item a.active {
+      font-weight: bold;
+      border-bottom: 2px solid white;
+    }
+
+    .navbar-item a:hover {
+      color: #cce7ff;
+    }

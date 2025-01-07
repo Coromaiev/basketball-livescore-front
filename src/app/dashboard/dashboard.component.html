@@ -1,8 +1,59 @@
-<div>
-  <h1>Matches Dashboard</h1>
-  <ul>
-    <li *ngFor="let match of matches">
-      Match: {{ match.hosts.name }} vs {{ match.visitors.name }}
-    </li>
-  </ul>
+<div class="dashboard">
+  <h1>Basketball Match Dashboard</h1>
+
+  <!-- Upcoming Matches -->
+  <div *ngIf="getUpcomingMatches().length > 0" class="match-category">
+    <h2>Upcoming Matches</h2>
+    <div class="match-list">
+      <div *ngFor="let match of getUpcomingMatches()" class="match-card" (click)="viewMatchDetails(match)">
+        <div class="match-header">
+          <h2>{{ match.hosts.name }} vs {{ match.visitors.name }}</h2>
+        </div>
+        <div class="match-info">
+          <p>Quarters: {{ match.quarterNumber }} | Duration: {{ match.quarterDuration }} min</p>
+          <p>Timeout Duration: {{ match.timeoutDuration }} min</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Matches -->
+  <div *ngIf="getLiveMatches().length > 0" class="match-category">
+    <h2>Live Matches</h2>
+    <div class="match-list">
+      <div *ngFor="let match of getLiveMatches()" class="match-card live" (click)="viewMatchDetails(match)">
+        <div class="match-header">
+          <h2>{{ match.hosts.name }} vs {{ match.visitors.name }}</h2>
+          <div class="score">
+            <span class="host-score">{{ match.hostsScore }}</span> - <span class="visitor-score">{{ match.visitorsScore }}</span>
+          </div>
+        </div>
+        <div class="match-info">
+          <p>Quarters: {{ match.quarterNumber }} | Duration: {{ match.quarterDuration }} min</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Finished Matches -->
+  <div *ngIf="getFinishedMatches().length > 0" class="match-category">
+    <h2>Finished Matches</h2>
+    <div class="match-list">
+      <div *ngFor="let match of getFinishedMatches()" class="match-card finished" (click)="viewMatchDetails(match)">
+        <div class="match-header">
+          <h2>{{ match.hosts.name }} vs {{ match.visitors.name }}</h2>
+          <div class="score">
+            <span class="host-score">{{ match.hostsScore }}</span> - <span class="visitor-score">{{ match.visitorsScore }}</span>
+          </div>
+        </div>
+        <div class="match-info">
+          <p>Quarters: {{ match.quarterNumber }} | Duration: {{ match.quarterDuration }} min</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedMatch">
+  <app-match-details [match]="selectedMatch"></app-match-details>
 </div>

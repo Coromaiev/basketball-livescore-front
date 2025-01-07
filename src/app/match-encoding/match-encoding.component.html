@@ -1,0 +1,80 @@
+<div class="encoding-container" *ngIf="match">
+  <h1>{{ match.hosts.name }} vs {{ match.visitors.name }} - Encoding</h1>
+
+  <!-- Preparation Mode -->
+  <div *ngIf="isPreparationMode" class="preparation-mode">
+    <h2>Setup the Match</h2>
+
+    <!-- Hosts Team -->
+    <div class="team-setup">
+      <div class="team">
+        <h3>{{ match.hosts.name }} - Starting Players</h3>
+        <div class="field">
+          <div *ngFor="let player of match.hosts.players"
+               class="player-token"
+               [class.selected]="hostsAddedPlayers.includes(player.id)"
+               (click)="togglePlayer('hosts', player)">
+            {{ player.firstName }} {{ player.lastName }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Visitors Team -->
+      <div class="team">
+        <h3>{{ match.visitors.name }} - Starting Players</h3>
+        <div class="field">
+          <div *ngFor="let player of match.visitors.players"
+               class="player-token"
+               [class.selected]="visitorsAddedPlayers.includes(player.id)"
+               (click)="togglePlayer('visitors', player)">
+            {{ player.firstName }} {{ player.lastName }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Assign Encoders -->
+    <div class="assign-encoders">
+      <h3>Assign Play Encoders</h3>
+      <div *ngFor="let encoder of match.playEncoders" class="encoder-token">
+        <label>
+          <input type="checkbox"
+                 [checked]="match.playEncoders.includes(encoder)"
+                 (change)="toggleEncoder(encoder)" />
+          {{ encoder.username }}
+        </label>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button (click)="saveListsChanges()">Save Changes</button>
+      <button (click)="startMatch()" [disabled]="hostsSelectedPlayers?.length !== 5 || visitorsSelectedPlayers?.length !== 5">Start Match</button>
+    </div>
+  </div>
+
+  <!-- Play Mode -->
+  <div *ngIf="!isPreparationMode" class="play-mode">
+    <h2>Encode Events</h2>
+
+    <div class="event-options">
+      <button (click)="encodeEvent('fault', {})">Fault</button>
+      <button (click)="encodeEvent('playerChange', {})">Player Change</button>
+      <button (click)="encodeEvent('scoreChange', {})">Score Change</button>
+      <button (click)="encodeEvent('timeout', {})">Timeout</button>
+    </div>
+
+    <!-- Event Encoding Form -->
+    <div class="event-details">
+      <label>Quarter:</label>
+      <input type="number" min="1" max="4" placeholder="Quarter Number">
+
+      <label>Time:</label>
+      <input type="number" placeholder="Time in seconds">
+
+      <label>Details:</label>
+      <textarea placeholder="Enter event details"></textarea>
+
+      <button (click)="encodeEvent('submitEvent', {})">Submit Event</button>
+    </div>
+  </div>
+</div>

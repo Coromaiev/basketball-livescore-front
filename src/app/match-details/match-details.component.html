@@ -1,0 +1,124 @@
+<div *ngIf="match" class="match-details">
+  <h1>{{ match.hosts.name }} vs {{ match.visitors.name }} - Match Details</h1>
+
+  <!-- Basic Data for all match statuses -->
+  <div class="basic-data">
+    <p><strong>Quarter Number:</strong> {{ match.quarterNumber }}</p>
+    <p><strong>Quarter Duration:</strong> {{ match.quarterDuration }} min</p>
+    <p><strong>Timeout Duration:</strong> {{ match.timeoutDuration }} min</p>
+  </div>
+
+  <!-- Upcoming Match -->
+  <div *ngIf="matchStatus === 'upcoming'" class="upcoming">
+    <h2>Starting Players</h2>
+    <div class="team-setup">
+      <div class="team">
+        <h3>{{ match.hosts.name }} Starting Players</h3>
+        <ul>
+          <li *ngFor="let player of hostsFieldPlayers">{{ player.number }} - {{ player.lastName }}</li>
+        </ul>
+      </div>
+
+      <div class="team">
+        <h3>{{ match.visitors.name }} Starting Players</h3>
+        <ul>
+          <li *ngFor="let player of visitorsFieldPlayers">{{ player.number }} - {{ player.lastName }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Match -->
+  <div *ngIf="matchStatus === 'live'" class="live">
+    <h2>Current Score</h2>
+    <div class="score">
+      <span class="host-score">{{ match.hostsScore }}</span> - <span class="visitor-score">{{ match.visitorsScore }}</span>
+    </div>
+
+    <h2>Event Details</h2>
+    <div *ngIf="match.events.faults.length">
+      <h3>Faults:</h3>
+      <ul>
+        <li *ngFor="let fault of match.events.faults">{{ fault.faultType }}</li>
+      </ul>
+    </div>
+
+    <div *ngIf="match.events.playerChanges.length">
+      <h3>Player Changes:</h3>
+      <ul>
+        <li *ngFor="let change of match.events.playerChanges">{{ change.leavingPlayerId }} swapped at {{ change.time }} with {{ change.replacingPlayerId }}</li>
+      </ul>
+    </div>
+
+    <div *ngIf="match.events.scoreChanges.length">
+      <h3>Score Changes:</h3>
+      <ul>
+        <li *ngFor="let scoreChange of match.events.scoreChanges">{{ scoreChange.scorerId }} scored {{ scoreChange.points }} points</li>
+      </ul>
+    </div>
+
+    <div *ngIf="match.events.timeOuts.length">
+      <h3>Timeouts:</h3>
+      <ul>
+        <li *ngFor="let timeOut of match.events.timeOuts">{{ timeOut.invokerId }} timeout at {{ timeOut.time }}</li>
+      </ul>
+    </div>
+
+    <h2>Current Field Players</h2>
+    <div class="team-setup">
+      <div class="team">
+        <h3>{{ match.hosts.name }} Current Players</h3>
+        <ul>
+          <li *ngFor="let player of hostsFieldPlayers">{{ player.number }} - {{ player.lastName }}</li>
+        </ul>
+      </div>
+
+      <div class="team">
+        <h3>{{ match.visitors.name }} Current Players</h3>
+        <ul>
+          <li *ngFor="let player of visitorsFieldPlayers">{{ player.number }} - {{ player.lastName }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Finished Match -->
+  <div *ngIf="matchStatus === 'finished'" class="finished">
+    <h2>Final Score</h2>
+    <div class="score">
+      <span class="host-score">{{ match.hostsScore }}</span> - <span class="visitor-score">{{ match.visitorsScore }}</span>
+    </div>
+
+    <h2>Event Details</h2>
+    <div *ngIf="match.events.faults.length">
+      <h3>Faults:</h3>
+      <ul>
+        <li *ngFor="let fault of match.events.faults">{{ fault.faultType }}</li>
+      </ul>
+    </div>
+
+    <div *ngIf="match.events.playerChanges.length">
+      <h3>Player Changes:</h3>
+      <ul>
+        <li *ngFor="let change of match.events.playerChanges">{{ change.leavingPlayerId }} swapped at {{ change.time }} with {{ change.replacingPlayerId }}</li>
+      </ul>
+    </div>
+
+    <div *ngIf="match.events.scoreChanges.length">
+      <h3>Score Changes:</h3>
+      <ul>
+        <li *ngFor="let scoreChange of match.events.scoreChanges">{{ scoreChange.scorerId }} scored {{ scoreChange.points }} points</li>
+      </ul>
+    </div>
+
+    <div *ngIf="match.events.timeOuts.length">
+      <h3>Timeouts:</h3>
+      <ul>
+        <li *ngFor="let timeOut of match.events.timeOuts">{{ timeOut.invokerId }} timeout at {{ timeOut.time }}</li>
+      </ul>
+    </div>
+
+    <h2>Winner</h2>
+    <p>{{ winner }} wins!</p>
+  </div>
+</div>

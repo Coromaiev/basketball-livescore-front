@@ -1,0 +1,74 @@
+.dashboard {
+  font-family: 'Arial', sans-serif;
+  padding: 20px;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+h1 {
+  text-align: center;
+  color: #2c3e50;
+}
+
+.match-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.match-card {
+  background-color: #f8f8f8;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.match-category {
+  margin-bottom: 40px;
+}
+
+  .match-category h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: #2c3e50;
+  }
+
+.match-card.live {
+  border-color: #e74c3c;
+  background-color: #fef1f1;
+}
+
+.match-card.finished {
+  border-color: #3498db;
+  background-color: #eef6fe;
+}
+
+  .match-card:hover {
+    transform: scale(1.05);
+  }
+
+.match-header h2 {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #e74c3c; /* Host team color */
+}
+
+.score {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.host-score {
+  color: #e74c3c;
+}
+
+.visitor-score {
+  color: #3498db; /* Visitor team color */
+}
+
+.match-info p {
+  font-size: 1rem;
+  color: #7f8c8d;
+}

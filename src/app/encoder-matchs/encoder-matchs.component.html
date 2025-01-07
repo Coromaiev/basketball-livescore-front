@@ -1,0 +1,28 @@
+<div class="match-list-container">
+  <h2 class="title">Matches for {{ username }}</h2>
+
+  <div class="match-card" *ngFor="let match of matches">
+    <div class="match-header">
+      <h3>{{ match.hosts.name }} vs {{ match.visitors.name }}</h3>
+      <p class="match-status">{{ match.hasStarted ? 'Live' : 'Upcoming' }}</p>
+    </div>
+
+    <div class="match-details">
+      <p><strong>Number of Quarters:</strong> {{ match.quarterNumber }}</p>
+      <p><strong>Quarter Duration:</strong> {{ match.quarterDuration }} minutes</p>
+      <p><strong>Timeout Duration:</strong> {{ match.timeoutDuration }} minutes</p>
+
+      <div *ngIf="match.hasStarted">
+        <p><strong>Encoders:</strong> {{ getEncoderNames(match.playEncoders) }}</p>
+      </div>
+    </div>
+
+    <div *ngIf="match.hasStarted" class="live-status">
+      <span>Match is live!</span>
+    </div>
+
+    <div class="encoding-button-container">
+      <button class="encoding-button" (click)="enterEncodingScreen(match.id)">Start Encoding</button>
+    </div>
+  </div>
+</div>

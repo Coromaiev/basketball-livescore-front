@@ -22,7 +22,10 @@ export interface Match {
     playerChanges: PlayerChange[],
     scoreChanges: ScoreChange[],
     timeOuts: TimeOut[]
-  }
+  },
+  isFinished: boolean,
+  hasStarted: boolean,
+  winner: string
 }
 
 export interface MatchCreate {
@@ -32,4 +35,19 @@ export interface MatchCreate {
   visitorsId: string,
   hostsId: string,
   prepEncoderId?: string
+}
+
+export interface MatchListUpdate {
+  incomingEntities: string[],
+  leavingEntities: string[],
+}
+
+export interface MatchPrepUpdate {
+  quarterDuration?: number,
+  quarterNumber?: number,
+  timeoutDuration?: number,
+  visitorsId?: string,
+  hostsId?: string,
+  prepEncoderId?: string,
+  hasStarted?: boolean
 }

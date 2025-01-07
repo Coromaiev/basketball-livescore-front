@@ -1,19 +1,34 @@
-<div>
+<div class="update-player-container">
   <h2>Update Player</h2>
-  <div *ngIf="player">
-    <form (ngSubmit)="updatePlayer()">
-      <label for="firstName">First Name</label>
-      <input id="firstName" [(ngModel)]="player.firstName" name="firstName" required />
+  <div *ngIf="player" class="form-container">
+    <form (ngSubmit)="updatePlayer()" class="update-player-form">
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input id="firstName" [(ngModel)]="player.firstName" name="firstName" required />
+      </div>
 
-      <label for="lastName">Last Name</label>
-      <input id="lastName" [(ngModel)]="player.lastName" name="lastName" required />
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input id="lastName" [(ngModel)]="player.lastName" name="lastName" required />
+      </div>
 
-      <label for="teamId">Team</label>
-      <select id="teamId" [(ngModel)]="player.teamId" name="teamId">
-        <option *ngFor="let team of teams" [value]="team.id">{{ team.name }}</option>
-      </select>
+      <div class="form-group">
+        <label for="teamId">Team</label>
+        <select id="teamId" [(ngModel)]="player.teamId" name="teamId">
+          <option *ngIf="!player.teamId" [value]="null" disabled>Select a team</option>
+          <option *ngFor="let team of teams" [value]="team.id">{{ team.name }}</option>
+        </select>
+        <button *ngIf="initialTeamId !== null" type="button" class="quit-team-button" (click)="quitTeam()">Quit Team</button>
+      </div>
 
-      <button type="submit">Update Player</button>
+      <div class="form-group">
+        <label for="number">Number</label>
+        <input id="number" type="number" [(ngModel)]="player.number" name="number" [required]="player.teamId !== null" min="1" max="255" />
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="submit-button">Update Player</button>
+      </div>
     </form>
   </div>
 </div>

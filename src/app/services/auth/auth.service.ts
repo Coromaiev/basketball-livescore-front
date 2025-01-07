@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Login } from '../../models/login.model';
 import { Register } from '../../models/register.model';
@@ -9,19 +9,31 @@ import { Register } from '../../models/register.model';
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly ROLE_CLAIM = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
-  private readonly EMAIL_CLAIM = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress';
-  private readonly USERNAME_CLAIM = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name';
-  private readonly USER_ID_CLAIM = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier';
-
-
+  public static readonly ADMIN_ROLE = 'Admin';
+  public static readonly ENCODER_ROLES = ['Encoder', 'Admin'];
+  private readonly CLAIMS = {
+    ROLE: 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role',
+    EMAIL: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',
+    USERNAME: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name',
+    USER_ID: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier',
+  };
+  private currentUserRoleSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
   private apiUrl: string = `${environment.apiDomain}${environment.apiUrl}/users`;
-  private userRole: string = '';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    const savedRole = this.getSavedRole();
+    if (savedRole) {
+      this.setCurrentUserRole(savedRole);
+    }
+  }
 
   login(loginData: Login): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, loginData);
+    return this.http.post(`${this.apiUrl}/login`, loginData).pipe(
+      tap((response: any) => {
+        const role = response.user.permission; // Assuming the API response contains the role
+        this.setCurrentUserRole(role); // Set the role after login
+      })
+    );
   }
 
   register(registerData: Register): Observable<any> {
@@ -30,6 +42,8 @@ export class AuthService {
 
   saveToken(token: string): void {
     sessionStorage.setItem('jwtToken', token);
+    const role = this.getCurrentUserRole();
+    this.setCurrentUserRole(role);
   }
 
   getToken(): string | null {
@@ -37,24 +51,53 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    const token = sessionStorage.getItem('jwtToken');
+    const token = this.getToken();
     return !!token && !this.isTokenExpired(token);
   }
 
-  loadUserRole(): void {
-    const token = this.getToken()!;
-    if (!token) return;
-    try {
-      const decoded = this.decodeToken(token);
-      this.userRole = decoded[this.ROLE_CLAIM] || '';
-    } catch (error) {
-      console.error('Error decoding token:', error);
-      this.userRole = '';
-    }
+  hasRole(requiredRoles: string[]): boolean {
+    var currentUserRole = this.getCurrentUserRole();
+    return currentUserRole ? requiredRoles.includes(currentUserRole) : false;
   }
 
-  hasRole(requiredRoles: string[]): boolean {
-    return requiredRoles.includes(this.userRole);
+  getAuthHeader(): any {
+    return {
+      "Authorization": `Bearer ${this.getToken()}`
+    };
+  }
+
+  getUserRoleSubject(): Observable<string | null> {
+    return this.currentUserRoleSubject.asObservable();
+  }
+
+  setCurrentUserRole(role: string | null): void {
+    this.currentUserRoleSubject.next(role);
+    this.saveRoleToStorage(role); // Save role to sessionStorage
+  }
+
+  getCurrentUserClaim(claim: string): any {
+    const token = this.getToken();
+    if (token) {
+      const decoded = this.decodeToken(token);
+      return decoded ? decoded[claim] : null;
+    }
+    return null;
+  }
+
+  getCurrentUserId(): string | null {
+    return this.getCurrentUserClaim(this.CLAIMS.USER_ID);
+  }
+
+  getCurrentUserRole(): string | null {
+    return this.getCurrentUserClaim(this.CLAIMS.ROLE);
+  }
+
+  getCurrentUserEmail(): string | null {
+    return this.getCurrentUserClaim(this.CLAIMS.EMAIL);
+  }
+
+  getCurrentUsername(): string | null {
+    return this.getCurrentUserClaim(this.CLAIMS.USERNAME);
   }
 
   private isTokenExpired(token: string): boolean {
@@ -78,5 +121,18 @@ export class AuthService {
 
   logout(): void {
     sessionStorage.removeItem('jwtToken');
+    this.setCurrentUserRole(null);
+  }
+
+  private saveRoleToStorage(role: string | null): void {
+    if (role) {
+      sessionStorage.setItem('userRole', role);
+    } else {
+      sessionStorage.removeItem('userRole');
+    }
+  }
+
+  private getSavedRole(): string | null {
+    return sessionStorage.getItem('userRole');
   }
 }

@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { User } from '../../models/user.model';
 import { Observable } from 'rxjs';
-import { Team } from '../../models/team.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TeamService {
-  private apiUrl: string = `${environment.apiDomain}${environment.apiUrl}/teams`;
+export class UserService {
+  private apiUrl: string = `${environment.apiDomain}${environment.apiUrl}/users`;
 
   constructor(private http: HttpClient) { }
 
-  getAllTeams(headers?: any): Observable<Team[]> {
-    return this.http.get<Team[]>(this.apiUrl, {
+  getAll(headers?: any): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiUrl}`, {
       headers: headers
-    });
+    })
   }
 }

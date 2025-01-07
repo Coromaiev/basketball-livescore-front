@@ -5,6 +5,8 @@ import { MatchService } from '../services/match/match.service';
 import { TeamService } from '../services/team/team.service';
 import { CommonModule } from '@angular/common';
 import { MatchCreate } from '../models/match.model';
+import { AuthService } from '../services/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-match',
@@ -20,7 +22,9 @@ export class AddMatchComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private teamService: TeamService,
-    private matchService: MatchService
+    private matchService: MatchService,
+    private authService: AuthService,
+    private router: Router
   ) {
     this.matchForm = this.formBuilder.group({
       hostsId: ['', Validators.required],
@@ -45,8 +49,14 @@ export class AddMatchComponent implements OnInit {
   addMatch(): void {
     if (this.matchForm.valid) {
       const matchData: MatchCreate = this.matchForm.value;
-      this.matchService.addMatch(matchData).subscribe({
-        next: () => alert('Match added successfully!'),
+      const currentUserId = this.authService.getCurrentUserId();
+      if (currentUserId) matchData.prepEncoderId = currentUserId;
+      const headers = this.authService.getAuthHeader();
+      this.matchService.addMatch(matchData, headers).subscribe({
+        next: () => {
+          alert('Match added successfully!');
+          this.router.navigate(['/dashboard']);
+        },
         error: (err) => console.error('Error adding match:', err),
       });
     }

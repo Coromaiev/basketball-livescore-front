@@ -1,0 +1,63 @@
+.match-details {
+  background-color: #ffffff;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+}
+
+h1 {
+  color: #2c3e50;
+}
+
+.basic-data {
+  margin-top: 20px;
+}
+
+.score {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.host-score {
+  color: #e74c3c;
+}
+
+.visitor-score {
+  color: #3498db;
+}
+
+.team-setup {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.team {
+  width: 48%;
+}
+
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+.upcoming, .live, .finished {
+  margin-top: 20px;
+}
+
+  .finished h2, .live h2, .upcoming h2 {
+    color: #34495e;
+  }
+
+  .finished p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #16a085;
+  }

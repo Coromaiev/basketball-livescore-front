@@ -22,7 +22,6 @@ export class LoginComponent {
     this.authService.login(this.login).subscribe({
       next: (response) => {
         this.authService.saveToken(response.token);
-        this.authService.loadUserRole();
         this.router.navigate(['/dashboard']);
       },
       error: (error) => {
