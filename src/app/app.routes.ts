@@ -22,7 +22,7 @@ export const routes: Routes = [
   { path: 'update-player/:id', component: UpdatePlayerComponent, title: 'Update Player', canActivate: [authorizationGuard], data: { roles: ['Admin'] } },
   { path: "access-denied", component: AccessDeniedComponent },
   { path: 'encoding/:id', component: MatchEncodingComponent, canActivate: [authorizationGuard, matchAssignmentGuard], data: { roles: ['Encoder', 'Admin'] } },
-  { path: 'my-encodings', component: EncoderMatchsComponent, canActivate: [authorizationGuard], data: { roles: ['Encoder', 'Admin'] } },
+  { path: 'my-encodings', component: EncoderMatchsComponent, canActivate: [authorizationGuard], data: { roles: ['Encoder', 'Admin'] }, title: 'My assigned matches' },
   { path: 'not-found', component: NotFoundComponent, title: 'Page Not Found' },
   { path: "**", component: NotFoundComponent, title: 'Page Not Found' }
 ];

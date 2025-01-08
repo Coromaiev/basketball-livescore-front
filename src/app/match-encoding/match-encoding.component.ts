@@ -70,23 +70,16 @@ export class MatchEncodingComponent implements OnInit, OnDestroy {
     const removedList = team === 'hosts' ? this.hostsRemovedPlayers : this.visitorsRemovedPlayers;
 
     if (this.match?.fieldPlayers.includes(player.id)) {
-      console.log('Removing player...');
       const indexInAdded = addedList.indexOf(player.id);
       if (indexInAdded !== -1) addedList.splice(indexInAdded, 1);
-      else {
-        removedList.push(player.id);
-      }
+      else removedList.push(player.id);
       this.match?.fieldPlayers.splice(this.match?.fieldPlayers.indexOf(player.id), 1);
     } else {
-      console.log('Adding player...');
-      this.match?.fieldPlayers.push(player.id);
-      addedList.push(player.id);
       const indexInRemoved = removedList.indexOf(player.id);
       if (indexInRemoved !== -1) removedList.splice(indexInRemoved, 1);
+      else addedList.push(player.id);
+      this.match?.fieldPlayers.push(player.id);
     }
-    console.log(`${team}:`);
-    console.log(addedList);
-    console.log(removedList);
   }
 
   toggleEncoder(encoder: User): void {
@@ -107,7 +100,7 @@ export class MatchEncodingComponent implements OnInit, OnDestroy {
     if (!this.match) return;
 
     this.updateMatch(this.hostsRemovedPlayers, this.hostsAddedPlayers, 'hosts');
-    this.updateMatch(this.visitorsRemovedPlayers, this.visitorsAddedPlayers, 'hosts');
+    this.updateMatch(this.visitorsRemovedPlayers, this.visitorsAddedPlayers, 'visitors');
     this.updateMatch(this.removedEncoders, this.addedEncoders);
 
     this.hostsAddedPlayers = [];

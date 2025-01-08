@@ -1,5 +1,5 @@
 <div class="encoding-container" *ngIf="match">
-  <h1>{{ match.hosts.name }} vs {{ match.visitors.name }} - Encoding</h1>
+  <h1 class="title">{{ match.hosts.name }} vs {{ match.visitors.name }} - Encoding</h1>
 
   <!-- Preparation Mode -->
   <div *ngIf="isPreparationMode" class="preparation-mode">
@@ -12,7 +12,7 @@
         <div class="field">
           <div *ngFor="let player of match.hosts.players"
                class="player-token"
-               [class.selected]="hostsAddedPlayers.includes(player.id)"
+               [class.selected]="match.fieldPlayers.includes(player.id)"
                (click)="togglePlayer('hosts', player)">
             {{ player.firstName }} {{ player.lastName }}
           </div>
@@ -24,9 +24,9 @@
         <h3>{{ match.visitors.name }} - Starting Players</h3>
         <div class="field">
           <div *ngFor="let player of match.visitors.players"
-               class="player-token"
-               [class.selected]="visitorsAddedPlayers.includes(player.id)"
-               (click)="togglePlayer('visitors', player)">
+                class="player-token"
+                [class.selected]="match.fieldPlayers.includes(player.id)"
+                (click)="togglePlayer('visitors', player)">
             {{ player.firstName }} {{ player.lastName }}
           </div>
         </div>
@@ -47,8 +47,8 @@
     </div>
 
     <div class="actions">
-      <button (click)="saveListsChanges()">Save Changes</button>
-      <button (click)="startMatch()" [disabled]="hostsSelectedPlayers?.length !== 5 || visitorsSelectedPlayers?.length !== 5">Start Match</button>
+      <button class="save-changes" (click)="saveListsChanges()">Save Changes</button>
+      <button class="start-match" (click)="startMatch()" [disabled]="hostsSelectedPlayers?.length !== 5 || visitorsSelectedPlayers?.length !== 5">Start Match</button>
     </div>
   </div>
 
