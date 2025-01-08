@@ -8,11 +8,13 @@ import { User } from '../models/user.model';
 import { UserService } from '../services/user/user.service';
 import { AuthService } from '../services/auth/auth.service';
 import { Observable } from 'rxjs';
+import { NotificationComponent } from '../notification/notification.component';
+import { NotificationsService } from '../services/notifications/notifications.service';
 
 @Component({
   selector: 'app-match-encoding',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NotificationComponent],
   templateUrl: './match-encoding.component.html',
   styleUrl: './match-encoding.component.css'
 })
@@ -38,8 +40,8 @@ export class MatchEncodingComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private matchService: MatchService,
-    private userService: UserService,
     private authService: AuthService,
+    private notificationService: NotificationsService,
     private router: Router
   ) { }
 
@@ -122,10 +124,18 @@ export class MatchEncodingComponent implements OnInit, OnDestroy {
       if (side) updateCall = this.matchService.updatePlayers(this.matchId, side, listUpdate, headers);
       else updateCall = this.matchService.updateEncoders(this.matchId, listUpdate, headers);
       updateCall.subscribe({
-        next: (updatedMatch) => this.match = updatedMatch,
+        next: () => {
+          this.notificationService.show(
+            side
+              ? `Successfully updated ${side} team players`
+              : 'Successfully updated match encoders',
+            'success'
+          );
+        },
         error: (error) => {
           console.error('Error updating match:', error);
-          this.router.navigate(['/access-denied'])
+          this.notificationService.show('Failed to update match', 'error');
+          //this.router.navigate(['/access-denied'])
         }
       })
     }
